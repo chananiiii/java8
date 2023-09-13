@@ -72,4 +72,38 @@ public class Foo {
         BinaryOperator<String> binaryOperator = (a, b) -> a + b;
         System.out.println(binaryOperator.apply("aa", "bb"));
     }
+
+    public void run() {
+
+        // 원래는 final 이 붙어야 바꾸지를 못하는데,
+        // 사실상 final 이다. 어디서도 변경을 하지 못한다. (참조는 가능)
+        // 로컬클래스와, 익명클래스는 쉐도잉이다.
+        // 하지만 람다는 쉐도잉이 되지 않는다.
+        int baseNumber = 10;
+
+
+        // 로컬 클래스
+        class LocalClass {
+            void printBaseNumber() {
+                int baseNumber = 11; // 같은 이름이지만 내부 스콥이 밖에있는 scope을 가렸다. 이것을 쉐도잉이라고한다.
+                System.out.println(baseNumber); // 11 이 찍힌다.
+            }
+        }
+
+        // 익명 클래스
+        Consumer<Integer> integerConsumer = new Consumer<Integer>() {
+            @Override
+            public void accept(Integer baseNumber) {
+                System.out.println(baseNumber);
+            }
+        };
+
+        // 얘는 위에 있는 baseNumber와 같은 레벨의 scope 이기 때문에,
+        // 입력값에 i 대신 baseNumber를 넣으면 오류가 난다.
+        // 그리고 람다에서는 밖의 변수를  final 처럼쓰고 있기 때문에,
+        // 바꾸려고 하면 에러가 난다.
+        IntConsumer printInt = (i) -> System.out.println(i + baseNumber);
+
+        printInt.accept(10);
+    }
 }
