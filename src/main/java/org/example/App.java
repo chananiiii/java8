@@ -1,10 +1,10 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 public class App {
     public static void main(String[] args) {
@@ -37,5 +37,45 @@ public class App {
 
         Arrays.sort(names, String::compareToIgnoreCase);
         System.out.println(Arrays.toString(names));
+
+        FooInterface foo = new DefaultFoo("keesun");
+        foo.printName();
+        foo.printNameUpperCase();
+
+        FooInterface.printAnything();
+
+        List <String> name = new ArrayList<>();
+        name.add("keesun");
+        name.add("shiteship");
+        name.add("toby");
+        name.add("foo");
+
+        System.out.println();
+
+        name.forEach(System.out::println);
+        /**
+         * for(String n : name) {
+         *     System.out.println(n);
+         * }
+         */
+
+        System.out.println("-----");
+
+        Spliterator <String> spliterator = name.spliterator();
+        Spliterator<String> spliterator1 = spliterator.trySplit();
+
+        while(spliterator.tryAdvance(System.out::println));
+        System.out.println("-----");
+        while(spliterator1.tryAdvance(System.out::println));
+
+        System.out.println("-----");
+
+        Stream <String> stream = name.stream();
+
+        name.removeIf(s -> s.startsWith("k"));
+
+        name.forEach(System.out::println);
+
+
     }
 }
